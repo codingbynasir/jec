@@ -93,7 +93,7 @@ img.card-img-top {
                         <h6 class="font-weight-bold indigo-text py-2 text-center" style="margin: 0px;">{{ act.subtitle }}</h6>
 
                           <div class="text-center">
-                              <button class="btn btn-pink" id="details_{{ shareholder.id }}_btn"><i class="fa fa-adobe"></i> View as pdf</button>
+                              <a href="{% url 'pdf' slug=act.slug %}" class="btn btn-pink" id="details_{{ shareholder.id }}_btn"><i class="fa fa-adobe"></i> View as pdf</a>
 
                           </div>
 

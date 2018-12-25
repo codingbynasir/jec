@@ -15,13 +15,23 @@ class Company(models.Model):
         return self.title
 
 
+class Designation(models.Model):
+    name=models.CharField(max_length=100)
+    def __str__(self):
+        return self.name.title()
+
+class Rank(models.Model):
+    name=models.CharField(max_length=100)
+    def __str__(self):
+        return self.name.title()
+
 
 
 class Shareholder(models.Model):
     name=models.CharField(max_length=100)
     message=RichTextUploadingField(null=True, blank=True)
-    designation=models.CharField(null=True,blank=True,max_length=100, choices=(("chairman","Chairman"),("vice-chairman","Vice Chairman"),("general-secretary","General Secretary"),("board-member-1","Board Member 1"),("board-member-2","Board Member 2"),("board-member-3","Board Member 3")))
-    rank=models.CharField(max_length=100, choices=(("founder","Founder"),("ordinary","Ordinary"),("governing","Governing"),("co-governing","Co-Governing"),("advisory","Advisory")))
+    designation = models.ManyToManyField(Designation)
+    rank = models.ManyToManyField(Rank)
     image= models.ImageField()
     education=models.CharField(max_length=100)
     job=models.CharField(max_length=100)
@@ -30,6 +40,8 @@ class Shareholder(models.Model):
     mobile=models.CharField(max_length=100, null=True, blank=True)
     def __str__(self):
         return self.name
+    def design(self):
+        return self.designation.name
 
 class RulesCategory(models.Model):
     title=models.CharField(max_length=200)

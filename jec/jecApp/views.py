@@ -1,10 +1,13 @@
-from django.shortcuts import render, get_object_or_404, Http404, redirect
+from django.shortcuts import render,HttpResponse, get_object_or_404, Http404, redirect
 from django.views import View
-from .models import Company, Shareholder, RulesCategory, RulesRegulation
+from io import BytesIO
+from .models import Company, Shareholder, RulesCategory, RulesRegulation, Rank
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from .global_content import r, gallery_category, f_category, b_category
+from django.template.loader import get_template
+from xhtml2pdf import pisa
 # Create your views here.
 
 class getHome(View):
@@ -23,7 +26,7 @@ class getHome(View):
 class getFounder(View):
     def get(self, request):
         try:
-            content = get_object_or_404(Shareholder, rank="founder")
+            content = Shareholder.objects.get(rank__name__icontains="founder")
             context={
                 "content": content,
                 "cat": r,
@@ -39,7 +42,7 @@ class getShareholder(View):
     def get(self, request, rank):
         #content = Shareholder.objects.all()
         if rank == "ordinary":
-            content = Shareholder.objects.exclude(rank="advisory")
+            content = Shareholder.objects.exclude(rank__name__icontains="advisory")
             context={
                 "shareholders": content,
                 "cat":r,
@@ -50,7 +53,7 @@ class getShareholder(View):
             return render(request, "shareholder.html", context)
 
         elif rank == "governing":
-            content = Shareholder.objects.exclude(designation=None, rank="advisory")
+            content = Shareholder.objects.exclude(designation__name=None, rank__name__icontains="advisory")
             context = {
                 "shareholders": content,
                 "cat": r,
@@ -125,3 +128,25 @@ class lawRules(View):
             "b_cat": b_category
         }
         return render(request,'rules_regulation.html', context)
+
+def render_pdf(template, data={}):
+    t=get_template(template)
+    bind=t.render(data)
+    byte=BytesIO()
+    pdf = pisa.pisaDocument(BytesIO(bind.encode("ISO-8859-1")), byte)
+    if pdf.err:
+        return None
+    else:
+        return HttpResponse(byte.getvalue(),content_type="application/pdf")
+
+
+
+class viewPDF(View):
+    def get(self, request, slug):
+        try:
+            data=get_object_or_404(RulesRegulation, slug=slug)
+        except:
+            return Http404("Object is not found")
+
+        pdf = render_pdf("pdf.html", {"data":data})
+        return HttpResponse(pdf, content_type="application/pdf")
