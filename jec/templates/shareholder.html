@@ -39,14 +39,22 @@ img.card-img-top {
       <!--First slide-->
       <div class="carousel-item active">
 
-        <div class="view" style="background-image: url('http://127.0.0.1:8000/media/aci.jpg'); background-repeat: no-repeat; background-size: cover;">
+        <div class="view" style="background-image: url('http://viamediationcentre.org/assets/images/honorary1.jpg'); background-repeat: no-repeat; background-size: cover;">
           <!-- Mask & flexbox options-->
           <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
             <!-- Content -->
             <div class="text-center white-text mx-5 wow fadeIn">
-              <h3 class="mb-4">
-                <strong>JESSORE ENTREPRENEUR & CONSUMER COOPERATIVE SOCIETY LTD</strong>
-              </h3>
+              <h1 class="mb-4 white-text">
+                  {% if request.path == "/shareholder/ordinary" %}
+                      Ordinary Shareholders
+                      {% elif request.path == "/shareholder/governing" %}
+                      Governing Board
+                      {% elif request.path == "/shareholder/co-governing" %}
+                      Co-Governing Board
+                      {% elif request.path == "/shareholder/advisory" %}
+                      Advisory Board
+                  {% endif %}
+              </h1>
             </div>
             <!-- Content -->
           </div>

@@ -1,7 +1,7 @@
 from django.shortcuts import render,HttpResponse, get_object_or_404, Http404, redirect
 from django.views import View
 from io import BytesIO
-from .models import Company, Shareholder, RulesCategory, RulesRegulation, Rank
+from .models import Company, Shareholder, RulesCategory, RulesRegulation, Rank, Message
 from django.db.models import Q
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
@@ -27,8 +27,10 @@ class getFounder(View):
     def get(self, request):
         try:
             content = Shareholder.objects.get(rank__name__icontains="founder")
+            message=get_object_or_404(Message, shareholder__id=content.id)
             context={
                 "content": content,
+                "message":message,
                 "cat": r,
                 "gallery_cat": gallery_category,
                 "f_cat": f_category,
@@ -42,7 +44,7 @@ class getShareholder(View):
     def get(self, request, rank):
         #content = Shareholder.objects.all()
         if rank == "ordinary":
-            content = Shareholder.objects.exclude(rank__name__icontains="advisory")
+            content = Shareholder.objects.exclude(rank__name__startswith="advisory")
             context={
                 "shareholders": content,
                 "cat":r,
@@ -53,9 +55,10 @@ class getShareholder(View):
             return render(request, "shareholder.html", context)
 
         elif rank == "governing":
-            content = Shareholder.objects.exclude(designation__name=None, rank__name__icontains="advisory")
+
+            tst = Shareholder.objects.exclude(rank__name__startswith="advisory")
             context = {
-                "shareholders": content,
+                "shareholders": tst,
                 "cat": r,
                 "gallery_cat": gallery_category,
                 "f_cat": f_category,
@@ -64,7 +67,7 @@ class getShareholder(View):
             return render(request, "shareholder.html", context)
 
         elif rank == "advisory":
-            content = Shareholder.objects.filter(rank="advisory")
+            content = Shareholder.objects.filter(rank__name__startswith="advisory")
             context = {
                 "shareholders": content,
                 "cat": r,
@@ -75,7 +78,7 @@ class getShareholder(View):
             return render(request, "shareholder.html", context)
 
         elif rank == "co-governing":
-            content = Shareholder.objects.filter(rank="ordinary", designation=None)
+            content = Shareholder.objects.filter(rank__name__startswith="ordinary")
             context = {
                 "shareholders": content,
                 "cat": r,

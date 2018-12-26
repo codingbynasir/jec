@@ -127,13 +127,13 @@
               <label for="phone">Phone number</label>
               <div class="row">
                 <div class="col-md-3">
-                  <select id="" class="form-control">
-                    <option value="">+88(BD)</option>
-                    <option value="">+58(IN)</option>
-                    <option value="">+56(EU)</option>
-                    <option value="">+78(US)</option>
-                    <option value="">+89(UK)</option>
-                    <option value="">+28(IS)</option>
+                  <select id="ctxl" class="form-control">
+                    <option value="Bangladesh">+88(BD)</option>
+                    <option value="India">+58(IN)</option>
+                    <option value="European union">+56(EU)</option>
+                    <option value="United state">+78(US)</option>
+                    <option value="United Kingdom">+89(UK)</option>
+                    <option value="Qatar">+99(Q)</option>
                   </select>
                 </div>
                 <div class="col-md-9">
@@ -155,5 +155,12 @@
   <!--Main layout-->
 {% endblock %}
 {% block script %}
+    <script>
 
+    $(document).ready(function () {
+        $('#ctxl').change(function () {
+            $('#phone').attr("placeholder",$('#ctxl').val());
+        });
+    });
+    </script>
 {% endblock %}

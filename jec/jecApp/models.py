@@ -29,7 +29,6 @@ class Rank(models.Model):
 
 class Shareholder(models.Model):
     name=models.CharField(max_length=100)
-    message=RichTextUploadingField(null=True, blank=True)
     designation = models.ManyToManyField(Designation)
     rank = models.ManyToManyField(Rank)
     image= models.ImageField()
@@ -42,6 +41,13 @@ class Shareholder(models.Model):
         return self.name
     def design(self):
         return self.designation.name
+
+class Message(models.Model):
+    shareholder=models.ForeignKey(Shareholder, on_delete=models.CASCADE)
+    banner=models.ImageField()
+    message_text=RichTextUploadingField(null=True, blank=True)
+    def __str__(self):
+        return self.shareholder.name.title()
 
 class RulesCategory(models.Model):
     title=models.CharField(max_length=200)

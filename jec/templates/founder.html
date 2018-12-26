@@ -37,14 +37,14 @@ border:2px solid green;
       <!--First slide-->
       <div class="carousel-item active">
 
-        <div class="view" style="background-image: url('{{ content.image.url }}'); background-repeat: no-repeat; background-size: cover;">
+        <div class="view" style="background-image: url('{{ message.banner.url }}'); background-repeat: no-repeat; background-size: cover;">
           <!-- Mask & flexbox options-->
           <div class="mask rgba-black-light d-flex justify-content-center align-items-center">
             <!-- Content -->
             <div class="text-center white-text mx-5 wow fadeIn">
-              <h3 class="mb-4">
-                <strong>JESSORE ENTREPRENEUR & CONSUMER COOPERATIVE SOCIETY LTD</strong>
-              </h3>
+              <h1 class="mb-4 white-text">
+                Message from the founder
+              </h1>
             </div>
             <!-- Content -->
           </div>
@@ -64,7 +64,7 @@ border:2px solid green;
 {% block content %}
 <main>
     <div class="container">
-        {{ content.message|safe }}
+        {{ message.message_text|safe }}
     </div>
   </main>
 {% endblock %}

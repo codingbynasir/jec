@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Company, Shareholder, RulesRegulation, RulesCategory, Designation, Rank
+from .models import Company, Shareholder, RulesRegulation,Message, RulesCategory, Designation, Rank
 # Register your models here.
 
 
@@ -20,3 +20,4 @@ admin.site.register(RulesRegulation)
 admin.site.register(RulesCategory)
 admin.site.register(Rank)
 admin.site.register(Designation)
+admin.site.register(Message)
